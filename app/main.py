@@ -1,12 +1,24 @@
+from collections.abc import AsyncGenerator
+from contextlib import asynccontextmanager
 from typing import Annotated
 
 from fastapi import Depends, FastAPI, status
 from sqlmodel.ext.asyncio.session import AsyncSession
 
+from app import proxy
 from app.db import get_session
 from app.models import Item, ItemIn, ItemOut
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
+    async with proxy.make_http_client() as client:
+        app.state.http_client = client
+        yield
+
+
+app = FastAPI(lifespan=lifespan)
+app.include_router(proxy.router)
 
 SessionDep = Annotated[AsyncSession, Depends(get_session)]
 

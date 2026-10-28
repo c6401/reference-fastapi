@@ -6,5 +6,9 @@ class Settings(BaseSettings):
 
     database_url: str = "sqlite+aiosqlite:///./app.db"
 
+    proxy_upstream_url: str | None = None
+    proxy_upstream_authorization: str | None = None
+    proxy_timeout: float = 30.0
+
 
 settings = Settings()

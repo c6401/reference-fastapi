@@ -52,5 +52,6 @@ def downgrade() -> None:
 - `app/models.py`: SQLModel models
 - `app/db.py`: engine, session
 - `app/config.py`: settings (`.env`)
+- `app/proxy.py`: `/proxy/*` → `PROXY_UPSTREAM_URL`, auth header swap in `upstream_headers()`
 - `alembic/`: migrations
 - `tests/`: tests
